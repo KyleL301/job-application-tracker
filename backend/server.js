@@ -4,6 +4,7 @@ const db = require("./config/db");
 
 const healthRoutes = require("./routes/healthRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -40,6 +41,7 @@ Start Server
 */
 app.use("/api/health", healthRoutes);
 app.use("/api/applications", applicationRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
