@@ -1,0 +1,13 @@
+/**
+ * card.css
+ *
+ * Styling for the reusable Card component.
+ */
+
+.card {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,41 @@
+/* Page */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fb;
+  padding: 2rem;
+}
+
+/* Card */
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  color: #2563eb;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header h2 {
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: #666;
+}
