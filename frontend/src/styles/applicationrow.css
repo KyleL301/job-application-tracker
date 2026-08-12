@@ -1,0 +1,28 @@
+/**
+ * applicationrow.css
+ *
+ * Styling for individual job application rows.
+ */
+
+.application-row {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.application-company strong {
+  color: #111827;
+}
+
+.application-position {
+  color: #4b5563;
+}
+
+.application-date {
+  color: #6b7280;
+  font-size: 0.9rem;
+}

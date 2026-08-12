@@ -1,0 +1,68 @@
+/**
+ * applicationtable.css
+ *
+ * Styling for the Recent Applications section
+ * of the Career Management dashboard.
+ */
+
+.application-table {
+  max-width: 1000px;
+  margin: 2rem auto 0;
+
+  background: #ffffff;
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.application-table-header {
+  padding: 1.5rem 1.5rem 1rem;
+}
+
+.application-table-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.application-table-columns {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1fr 1fr;
+
+  gap: 1rem;
+
+  padding: 0.75rem 1.25rem;
+
+  background: #f9fafb;
+
+  color: #6b7280;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.application-table-body {
+  width: 100%;
+}
+
+/**
+ * Empty state displayed when the user
+ * has not added any applications yet.
+ */
+
+.application-empty-state {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.application-empty-state h3 {
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.application-empty-state p {
+  margin: 0;
+  color: #6b7280;
+}

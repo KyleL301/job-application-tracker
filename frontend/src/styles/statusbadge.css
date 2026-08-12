@@ -1,0 +1,37 @@
+/**
+ * statusbadge.css
+ *
+ * Styling for the reusable application status badge.
+ */
+
+.status-badge {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Application submitted but no response yet. */
+.status-badge.applied {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* Applicant has progressed to an interview. */
+.status-badge.interview {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+/* Applicant has received an offer. */
+.status-badge.offer {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+/* Application was unsuccessful. */
+.status-badge.rejected {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
