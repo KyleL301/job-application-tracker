@@ -34,7 +34,13 @@ function ApplicationRow({ application }) {
         <StatusBadge status={application.status} />
       </div>
 
-      <div className="application-date">{application.dateApplied}</div>
+      <div className="application-date">
+        {new Date(application.dateApplied).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })}
+      </div>
     </div>
   );
 }
