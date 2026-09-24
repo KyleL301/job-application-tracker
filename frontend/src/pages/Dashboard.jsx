@@ -76,7 +76,23 @@ function Dashboard() {
       dateApplied: formData.dateApplied,
     };
 
+    // Add the new application to the applications list.
     setApplications([...applications, newApplication]);
+
+    // Reset the form fields after submission.
+    setFormData({
+      company: "",
+      position: "",
+      salary: "",
+      workType: "",
+      source: "",
+      customSource: "",
+      status: "Applied",
+      dateApplied: "",
+    });
+
+    // Close the form after the application has been added.
+    setShowForm(false);
   };
 
   return (
