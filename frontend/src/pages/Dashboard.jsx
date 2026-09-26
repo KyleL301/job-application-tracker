@@ -64,6 +64,32 @@ function Dashboard() {
    * Adds a new job application to the application list.
    */
   const handleAddApplication = () => {
+    // Check that the company and position have been entered.
+    if (!formData.company.trim() || !formData.position.trim()) {
+      alert("Please enter a company and position.");
+      return;
+    }
+
+    if (!formData.workType) {
+      alert("Please select a work type.");
+      return;
+    }
+
+    if (!formData.source) {
+      alert("Please select a source.");
+      return;
+    }
+
+    if (!formData.dateApplied) {
+      alert("Please select the date you applied.");
+      return;
+    }
+
+    if (formData.source === "Other" && !formData.customSource.trim()) {
+      alert("Please enter the custom source.");
+      return;
+    }
+
     const newApplication = {
       id: Date.now(),
       company: formData.company,
