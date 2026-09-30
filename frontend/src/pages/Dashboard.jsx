@@ -121,6 +121,20 @@ function Dashboard() {
     setShowForm(false);
   };
 
+  const totalApplications = applications.length;
+
+  const totalInterviews = applications.filter(
+    (application) => application.status === "Interview",
+  ).length;
+
+  const totalOffers = applications.filter(
+    (application) => application.status === "Offer",
+  ).length;
+
+  const totalRejected = applications.filter(
+    (application) => application.status === "Rejected",
+  ).length;
+
   return (
     <main className="dashboard">
       {/* Hero Section */}
@@ -286,12 +300,11 @@ function Dashboard() {
 
       {/* Statistics */}
       <section className="stats-grid">
-        <StatCard title="Applications" value="12" />
-        <StatCard title="Interviews" value="3" />
-        <StatCard title="Offers" value="1" />
-        <StatCard title="Rejected" value="8" />
+        <StatCard title="Applications" value={totalApplications} />
+        <StatCard title="Interviews" value={totalInterviews} />
+        <StatCard title="Offers" value={totalOffers} />
+        <StatCard title="Rejected" value={totalRejected} />
       </section>
-
       {/* Display the user's job applications in the application table */}
       <ApplicationTable applications={applications} />
     </main>
