@@ -17,8 +17,9 @@ import "../styles/applicationtable.css";
  *
  * @param {Object} props
  * @param {Array} props.applications - List of job applications.
+ * @param {Function} props.onDelete - Function to handle application deletion.
  */
-function ApplicationTable({ applications }) {
+function ApplicationTable({ applications, onDelete }) {
   return (
     <section className="application-table">
       <div className="application-table-header">
@@ -35,7 +36,11 @@ function ApplicationTable({ applications }) {
       <div className="application-table-body">
         {applications.length > 0 ? (
           applications.map((application) => (
-            <ApplicationRow key={application.id} application={application} />
+            <ApplicationRow
+              key={application.id}
+              application={application}
+              onDelete={onDelete}
+            />
           ))
         ) : (
           <div className="application-empty-state">

@@ -20,8 +20,9 @@ import "../styles/applicationrow.css";
  * @param {string} props.application.position - Job position.
  * @param {string} props.application.status - Application status.
  * @param {string} props.application.dateApplied - Date the application was submitted.
+ * @param {Function} props.onDelete - Function to handle application deletion.
  */
-function ApplicationRow({ application }) {
+function ApplicationRow({ application, onDelete }) {
   return (
     <div className="application-row">
       <div className="application-company">
@@ -40,6 +41,12 @@ function ApplicationRow({ application }) {
           month: "short",
           year: "numeric",
         })}
+      </div>
+
+      <div className="application-actions">
+        <button type="button" onClick={() => onDelete(application.id)}>
+          Delete
+        </button>
       </div>
     </div>
   );

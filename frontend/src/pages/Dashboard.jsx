@@ -121,6 +121,17 @@ function Dashboard() {
     setShowForm(false);
   };
 
+  /**
+   * Removes a job application from the application list.
+   *
+   * @param {number} applicationId - ID of the application to remove.
+   */
+  const handleDeleteApplication = (applicationId) => {
+    setApplications(
+      applications.filter((application) => application.id !== applicationId),
+    );
+  };
+
   const totalApplications = applications.length;
 
   const totalInterviews = applications.filter(
@@ -306,7 +317,10 @@ function Dashboard() {
         <StatCard title="Rejected" value={totalRejected} />
       </section>
       {/* Display the user's job applications in the application table */}
-      <ApplicationTable applications={applications} />
+      <ApplicationTable
+        applications={applications}
+        onDelete={handleDeleteApplication}
+      />
     </main>
   );
 }
