@@ -21,8 +21,9 @@ import "../styles/applicationrow.css";
  * @param {string} props.application.status - Application status.
  * @param {string} props.application.dateApplied - Date the application was submitted.
  * @param {Function} props.onDelete - Function to handle application deletion.
+ * @param {Function} props.onEdit - Function to handle application editing.
  */
-function ApplicationRow({ application, onDelete }) {
+function ApplicationRow({ application, onDelete, onEdit }) {
   return (
     <div className="application-row">
       <div className="application-company">
@@ -44,6 +45,9 @@ function ApplicationRow({ application, onDelete }) {
       </div>
 
       <div className="application-actions">
+        <button type="button" onClick={() => onEdit(application.id)}>
+          Edit
+        </button>
         <button type="button" onClick={() => onDelete(application.id)}>
           Delete
         </button>

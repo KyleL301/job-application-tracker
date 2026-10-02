@@ -18,8 +18,9 @@ import "../styles/applicationtable.css";
  * @param {Object} props
  * @param {Array} props.applications - List of job applications.
  * @param {Function} props.onDelete - Function to handle application deletion.
+ * @param {Function} props.onEdit - Function to handle application editing.
  */
-function ApplicationTable({ applications, onDelete }) {
+function ApplicationTable({ applications, onDelete, onEdit }) {
   return (
     <section className="application-table">
       <div className="application-table-header">
@@ -40,6 +41,7 @@ function ApplicationTable({ applications, onDelete }) {
               key={application.id}
               application={application}
               onDelete={onDelete}
+              onEdit={onEdit}
             />
           ))
         ) : (

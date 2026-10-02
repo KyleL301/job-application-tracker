@@ -24,6 +24,7 @@ import "../styles/dashboard.css";
  */
 function Dashboard() {
   const [showForm, setShowForm] = useState(false);
+  const [editingApplicationId, setEditingApplicationId] = useState(null);
 
   const [applications, setApplications] = useState([
     {
@@ -132,6 +133,72 @@ function Dashboard() {
     );
   };
 
+  /**
+   * Loads an existing application into the form for editing.
+   *
+   * @param {number} applicationId - ID of the application to edit.
+   */
+  const handleEditApplication = (applicationId) => {
+    const applicationToEdit = applications.find(
+      (application) => application.id === applicationId,
+    );
+
+    if (!applicationToEdit) {
+      return;
+    }
+
+    setFormData({
+      company: applicationToEdit.company,
+      position: applicationToEdit.position,
+      salary: applicationToEdit.salary || "",
+      workType: applicationToEdit.workType || "",
+      source: applicationToEdit.source || "",
+      customSource: applicationToEdit.customSource || "",
+      status: applicationToEdit.status,
+      dateApplied: applicationToEdit.dateApplied,
+    });
+
+    setEditingApplicationId(applicationId);
+    setShowForm(true);
+  };
+
+  /**
+   * Updates an existing job application.
+   */
+  const handleUpdateApplication = () => {
+    const updatedApplications = applications.map((application) =>
+      application.id === editingApplicationId
+        ? {
+            ...application,
+            company: formData.company,
+            position: formData.position,
+            salary: formData.salary,
+            workType: formData.workType,
+            source: formData.source,
+            customSource: formData.customSource,
+            status: formData.status,
+            dateApplied: formData.dateApplied,
+          }
+        : application,
+    );
+
+    setApplications(updatedApplications);
+
+    setFormData({
+      company: "",
+      position: "",
+      salary: "",
+      workType: "",
+      source: "",
+      customSource: "",
+      status: "Applied",
+      dateApplied: "",
+    });
+
+    setEditingApplicationId(null);
+    setShowForm(false);
+  };
+
   const totalApplications = applications.length;
 
   const totalInterviews = applications.filter(
@@ -162,7 +229,9 @@ function Dashboard() {
 
       {showForm && (
         <section className="application-form">
-          <h2>Add Application</h2>
+          <h2>
+            {editingApplicationId ? "Edit Application" : "Add Application"}
+          </h2>
 
           <label htmlFor="company">Company</label>
 
@@ -303,8 +372,15 @@ function Dashboard() {
             }
           />
 
-          <Button type="button" onClick={handleAddApplication}>
-            Add Application
+          <Button
+            type="button"
+            onClick={
+              editingApplicationId
+                ? handleUpdateApplication
+                : handleAddApplication
+            }
+          >
+            {editingApplicationId ? "Save Changes" : "Add Application"}
           </Button>
         </section>
       )}
@@ -320,6 +396,7 @@ function Dashboard() {
       <ApplicationTable
         applications={applications}
         onDelete={handleDeleteApplication}
+        onEdit={handleEditApplication}
       />
     </main>
   );
