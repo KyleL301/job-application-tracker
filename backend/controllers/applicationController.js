@@ -1,7 +1,9 @@
 const db = require("../config/db");
 
 /**
- * Create a new job application
+ * Create a new job application.
+ *
+ * Each application is assigned to the authenticated user.
  */
 const createApplication = (req, res) => {
   const {
@@ -16,9 +18,13 @@ const createApplication = (req, res) => {
     notes,
   } = req.body;
 
+  // Get the user ID from the verified JWT token.
+  const userId = req.user.id;
+
   const sql = `
     INSERT INTO applications
     (
+      user_id,
       company,
       position,
       location,
@@ -29,12 +35,13 @@ const createApplication = (req, res) => {
       recruiter_email,
       notes
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
     sql,
     [
+      userId,
       company,
       position,
       location,
@@ -47,7 +54,8 @@ const createApplication = (req, res) => {
     ],
     (err, result) => {
       if (err) {
-        console.error(err);
+        console.error("Error creating application:", err);
+
         return res.status(500).json({
           message: "Failed to create application",
         });
@@ -62,14 +70,22 @@ const createApplication = (req, res) => {
 };
 
 /**
- * Get all job applications
+ * Get job applications belonging to the authenticated user.
  */
 const getApplications = (req, res) => {
-  const sql = "SELECT * FROM applications ORDER BY created_at DESC";
+  // Identify the owner from the verified JWT token.
+  const userId = req.user.id;
 
-  db.query(sql, (err, results) => {
+  const sql = `
+    SELECT *
+    FROM applications
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
     if (err) {
-      console.error(err);
+      console.error("Error retrieving applications:", err);
 
       return res.status(500).json({
         message: "Failed to retrieve applications",
@@ -85,10 +101,11 @@ const getApplications = (req, res) => {
 };
 
 /**
- * Update an existing job application
+ * Update an application belonging to the authenticated user.
  */
 const updateApplication = (req, res) => {
   const { id } = req.params;
+  const userId = req.user.id;
 
   const {
     company,
@@ -103,19 +120,21 @@ const updateApplication = (req, res) => {
   } = req.body;
 
   const sql = `
-  UPDATE applications
-  SET
-    company = ?,
-    position = ?,
-    location = ?,
-    salary = ?,
-    status = ?,
-    applied_date = ?,
-    recruiter_name = ?,
-    recruiter_email = ?,
-    notes = ?
-  WHERE id = ?
-`;
+    UPDATE applications
+    SET
+      company = ?,
+      position = ?,
+      location = ?,
+      salary = ?,
+      status = ?,
+      applied_date = ?,
+      recruiter_name = ?,
+      recruiter_email = ?,
+      notes = ?
+    WHERE id = ?
+      AND user_id = ?
+  `;
+
   db.query(
     sql,
     [
@@ -129,16 +148,18 @@ const updateApplication = (req, res) => {
       recruiter_email,
       notes,
       id,
+      userId,
     ],
     (err, result) => {
       if (err) {
-        console.error(err);
+        console.error("Error updating application:", err);
 
         return res.status(500).json({
           message: "Failed to update application",
         });
       }
 
+      // This also applies when the application belongs to another user.
       if (result.affectedRows === 0) {
         return res.status(404).json({
           message: "Application not found",
@@ -153,24 +174,28 @@ const updateApplication = (req, res) => {
 };
 
 /**
- * Delete an existing job application
+ * Delete an application belonging to the authenticated user.
  */
 const deleteApplication = (req, res) => {
   const { id } = req.params;
+  const userId = req.user.id;
 
   const sql = `
-  DELETE FROM applications
-  WHERE id = ?
-`;
-  db.query(sql, [id], (err, result) => {
+    DELETE FROM applications
+    WHERE id = ?
+      AND user_id = ?
+  `;
+
+  db.query(sql, [id, userId], (err, result) => {
     if (err) {
-      console.error(err);
+      console.error("Error deleting application:", err);
 
       return res.status(500).json({
         message: "Failed to delete application",
       });
     }
 
+    // An application owned by another user cannot be deleted.
     if (result.affectedRows === 0) {
       return res.status(404).json({
         message: "Application not found",

@@ -8,6 +8,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Verify the user's JWT token before allowing access to application routes.
+const authMiddleware = require("../middleware/authMiddleware");
+
 // Import controller
 const {
   createApplication,
@@ -16,32 +19,16 @@ const {
   deleteApplication,
 } = require("../controllers/applicationController");
 
-/**
- * POST /api/applications
- *
- * Creates a new job application.
- */
-router.post("/", createApplication);
+// Create a job application.
+router.post("/", authMiddleware, createApplication);
 
-/**
- * GET /api/applications
- * Get all applications
- */
-router.get("/", getApplications);
+// Retrieve job applications.
+router.get("/", authMiddleware, getApplications);
 
-/**
- * PUT /api/applications/:id
- *
- * Updates an existing job application.
- */
-router.put("/:id", updateApplication);
+// Update an existing job application.
+router.put("/:id", authMiddleware, updateApplication);
 
-/**
- * DELETE /api/applications/:id
- *
- * Deletes a specific job application from the database
- * using the application's unique ID.
- */
-router.delete("/:id", deleteApplication);
+// Delete an existing job application.
+router.delete("/:id", authMiddleware, deleteApplication);
 
 module.exports = router;
