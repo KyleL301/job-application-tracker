@@ -16,28 +16,33 @@ const createApplication = (req, res) => {
     recruiter_name,
     recruiter_email,
     notes,
+    work_type,
+    source,
+    custom_source,
   } = req.body;
 
   // Get the user ID from the verified JWT token.
   const userId = req.user.id;
 
   const sql = `
-    INSERT INTO applications
-    (
-      user_id,
-      company,
-      position,
-      location,
-      salary,
-      status,
-      applied_date,
-      recruiter_name,
-      recruiter_email,
-      notes
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-
+  INSERT INTO applications
+  (
+    user_id,
+    company,
+    position,
+    location,
+    salary,
+    status,
+    applied_date,
+    recruiter_name,
+    recruiter_email,
+    notes,
+    work_type,
+    source,
+    custom_source
+  )
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
   db.query(
     sql,
     [
@@ -51,6 +56,9 @@ const createApplication = (req, res) => {
       recruiter_name,
       recruiter_email,
       notes,
+      work_type,
+      source,
+      custom_source,
     ],
     (err, result) => {
       if (err) {
@@ -117,23 +125,29 @@ const updateApplication = (req, res) => {
     recruiter_name,
     recruiter_email,
     notes,
+    work_type,
+    source,
+    custom_source,
   } = req.body;
 
   const sql = `
-    UPDATE applications
-    SET
-      company = ?,
-      position = ?,
-      location = ?,
-      salary = ?,
-      status = ?,
-      applied_date = ?,
-      recruiter_name = ?,
-      recruiter_email = ?,
-      notes = ?
-    WHERE id = ?
-      AND user_id = ?
-  `;
+  UPDATE applications
+  SET
+    company = ?,
+    position = ?,
+    location = ?,
+    salary = ?,
+    status = ?,
+    applied_date = ?,
+    recruiter_name = ?,
+    recruiter_email = ?,
+    notes = ?,
+    work_type = ?,
+    source = ?,
+    custom_source = ?
+  WHERE id = ?
+    AND user_id = ?
+`;
 
   db.query(
     sql,
@@ -147,6 +161,9 @@ const updateApplication = (req, res) => {
       recruiter_name,
       recruiter_email,
       notes,
+      work_type,
+      source,
+      custom_source,
       id,
       userId,
     ],

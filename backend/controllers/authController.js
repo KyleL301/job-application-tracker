@@ -9,43 +9,72 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 
-/**
- * Register a new user
- */
 const registerUser = async (req, res) => {
   try {
-    // Get the user data from the request body
     const { name, email, password } = req.body;
 
-    // Hash the password before storing it
+    // Clean up user input before validation.
+    const cleanName = typeof name === "string" ? name.trim() : "";
+    const cleanEmail =
+      typeof email === "string" ? email.trim().toLowerCase() : "";
+
+    // Validate required fields.
+    if (!cleanName || !cleanEmail || !password) {
+      return res.status(400).json({
+        message: "Name, email and password are required.",
+      });
+    }
+
+    // Basic email validation.
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(cleanEmail)) {
+      return res.status(400).json({
+        message: "Please provide a valid email address.",
+      });
+    }
+
+    // Require a minimum password length.
+    if (password.length < 8) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters long.",
+      });
+    }
+
+    // Hash the password before storing it.
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // SQL query to insert a new user
     const sql = `
-    INSERT INTO users (name, email, password)
-    VALUES (?, ?, ?)
-`;
+      INSERT INTO users (name, email, password)
+      VALUES (?, ?, ?)
+    `;
 
-    // Execute the query
-    db.query(sql, [name, email, hashedPassword], (err, result) => {
+    db.query(sql, [cleanName, cleanEmail, hashedPassword], (err, result) => {
       if (err) {
-        console.error(err);
+        // MySQL duplicate entry error.
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(409).json({
+            message: "An account with this email already exists.",
+          });
+        }
+
+        console.error("Registration error:", err);
 
         return res.status(500).json({
           message: "Failed to register user.",
         });
       }
 
-      res.status(201).json({
+      return res.status(201).json({
         message: "User registered successfully!",
         userId: result.insertId,
       });
     });
   } catch (error) {
-    console.error(error);
+    console.error("Registration error:", error);
 
-    res.status(500).json({
-      message: "Server error",
+    return res.status(500).json({
+      message: "Server error.",
     });
   }
 };

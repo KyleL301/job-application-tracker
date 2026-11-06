@@ -27,3 +27,8 @@ Thumbs.db
 # IDE Files
 # ============================
 .vscode/
+
+# Environment variables and sensitive credentials
+.env
+.env.*
+!.env.example

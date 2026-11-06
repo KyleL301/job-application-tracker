@@ -6,16 +6,18 @@
  */
 
 const mysql = require("mysql2");
+require("dotenv").config();
 
-// Create the database connection
+// Create the database connection using environment variables.
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "job_tracker",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
 });
 
-// Attempt to connect
+// Attempt to connect to the database.
 connection.connect((err) => {
   if (err) {
     console.error("❌ Database connection failed:", err.message);
@@ -25,5 +27,5 @@ connection.connect((err) => {
   console.log("✅ Connected to MariaDB!");
 });
 
-// Export the connection so it can be used in other files
+// Export the connection so it can be used in other files.
 module.exports = connection;
